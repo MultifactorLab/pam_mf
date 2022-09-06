@@ -10,14 +10,14 @@
 ## Перед сборкой нужно установить
 - Debian based Systems:
 $ sudo apt-get install autoconf libtool libpam-dev libssl-dev make
-- RHEL based systems
+- RHEL based systems:
 $ sudo yum install autoconf libtool pam-devel openssl-devel
 
 ## Сборка
-$ chmod a+x ./configure
-$ ./configure --with-pamdir=<pam_modules_dir>
-<pam_modules_dir> - путь куда будет установлен pam модуль, обычно это usr/lib/security, но могут быть отличия.
-$ make
+# $ chmod a+x ./configure
+# $ ./configure --with-pamdir=<pam_modules_dir>
+# <pam_modules_dir> - путь куда будет установлен pam модуль, обычно это usr/lib/security, но могут быть отличия.
+# $ make
 
 ## Установка
 $ sudo make install
