@@ -1,0 +1,20 @@
+SOURCES = src/config.c src/service.c src/md5.c src/radius.c src/pam_mf.c 
+CC = @CC@
+PAMDIR=@PAMDIR@
+CFLAGS = -fPIC -fno-strict-aliasing @CFLAGS@
+LDFLAGS = -fPIC @LDFLAGS@
+LDFLAGS += -shared
+
+all: pam_mf.o pam_mf.so
+pam_mf.o: $(SOURCES)
+	$(CC) $(CFLAGS) -c $^ 
+pam_mf.so: config.o service.o md5.o radius.o pam_mf.o 
+	$(CC) $(LDFLAGS) $^ -lpam -o $@
+.PHONY: clean
+clean:
+	rm -f *~ myapp *.so *.o src/*.o src/*~
+.PHONY: install
+install: all
+	@mkdir -p $(PAMDIR)
+	install -m 0644 pam_mf.so $(PAMDIR)
+	install -m 0644 pam_mf.conf /etc/pam_mf.conf
