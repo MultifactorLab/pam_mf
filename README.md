@@ -14,10 +14,13 @@ $ sudo apt-get install autoconf libtool libpam-dev libssl-dev make
 $ sudo yum install autoconf libtool pam-devel openssl-devel
 
 ## Сборка
-# $ chmod a+x ./configure
-# $ ./configure --with-pamdir=<pam_modules_dir>
-# <pam_modules_dir> - путь куда будет установлен pam модуль, обычно это usr/lib/security, но могут быть отличия.
-# $ make
+```
+$ chmod a+x ./configure
+$ ./configure --with-pamdir=<pam_modules_dir>
+$ make
+```
+<pam_modules_dir> - путь куда будет установлен pam модуль, обычно это usr/lib/security, но могут быть отличия.
+
 
 ## Установка
 $ sudo make install
