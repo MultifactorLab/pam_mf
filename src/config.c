@@ -86,9 +86,9 @@ int parseSting(char* buf, char* key, char* val)
 	}
 	return -1;
 }
-void mfLog(const char* p_format, ...)
+void mfLog(char *fileName, const char* p_format, ...)
 {
-	FILE *f=fopen("/home/nikan/pam/tst/log","a");
+	FILE *f=fopen(fileName,"a");
 	if(f==NULL) return;
 	va_list l_argp;
 	
@@ -99,23 +99,23 @@ void mfLog(const char* p_format, ...)
 	
 }
 
-void dumpConfig(mf_config_t* cfg)
+void dumpConfig(char *fileName, mf_config_t* cfg)
 {
-	mfLog("Hosts: %s\n",cfg->hosts);
-	mfLog("Port: %s\n",cfg->port);
-	mfLog("Secret: %s\n",cfg->secret);
-	mfLog("Nas: %s\n",cfg->nas);
-	mfLog("Users: %s\n",cfg->users);
-	mfLog("Groups: %s\n",cfg->groups);
-	mfLog("TimeOut: %d\n",cfg->timeout);
-	mfLog("Retry: %d\n",cfg->retry);
-	mfLog("Always: %d\n",cfg->rAlways);
-	mfLog("User: %d\n",cfg->rUser);
-	mfLog("Skip: %d\n",cfg->rSkip);
-	mfLog("Bypass: %d\n",cfg->rBypass);
-	mfLog("Inter: %d\n",cfg->rInt);
-	mfLog("ok: %d\n",cfg->rOk);
-	mfLog("Fail: %d\n",cfg->rFail);
+	mfLog(fileName,"Hosts: %s\n",cfg->hosts);
+	mfLog(fileName,"Port: %s\n",cfg->port);
+	mfLog(fileName,"Secret: %s\n",cfg->secret);
+	mfLog(fileName,"Nas: %s\n",cfg->nas);
+	mfLog(fileName,"Users: %s\n",cfg->users);
+	mfLog(fileName,"Groups: %s\n",cfg->groups);
+	mfLog(fileName,"TimeOut: %d\n",cfg->timeout);
+	mfLog(fileName,"Retry: %d\n",cfg->retry);
+	mfLog(fileName,"Always: %d\n",cfg->rAlways);
+	mfLog(fileName,"User: %d\n",cfg->rUser);
+	mfLog(fileName,"Skip: %d\n",cfg->rSkip);
+	mfLog(fileName,"Bypass: %d\n",cfg->rBypass);
+	mfLog(fileName,"Inter: %d\n",cfg->rInt);
+	mfLog(fileName,"ok: %d\n",cfg->rOk);
+	mfLog(fileName,"Fail: %d\n",cfg->rFail);
 
 }
 void initConfig(mf_config_t* cfg)

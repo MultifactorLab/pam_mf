@@ -12,9 +12,9 @@ typedef struct mf_config {
 } mf_config_t;
 
 void initConfig(mf_config_t* cfg);
-void dumpConfig(mf_config_t* cfg);
+void dumpConfig(char *fileName, mf_config_t* cfg);
 int loadConfig(mf_config_t* cfg, char* file, char* service);
-void mfLog(const char* p_format, ...);
+void mfLog(char *fileName, const char* p_format, ...);
 int getItem(char* items, int idx, char* res);
 
 
