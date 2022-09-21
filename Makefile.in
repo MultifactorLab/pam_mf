@@ -4,6 +4,7 @@ PAMDIR=@PAMDIR@
 CFLAGS = -fPIC -fno-strict-aliasing @CFLAGS@
 LDFLAGS = -fPIC @LDFLAGS@
 LDFLAGS += -shared
+VERSION = $(shell cat VERSION)
 
 all: pam_mf.o pam_mf.so
 pam_mf.o: $(SOURCES)
@@ -18,3 +19,19 @@ install: all
 	@mkdir -p $(PAMDIR)
 	install -m 0644 pam_mf.so $(PAMDIR)
 	install -m 0644 pam_mf.conf /etc/pam_mf.conf
+
+debian/changelog: debian/changelog.in
+	sed "s/@VERSION@/$(VERSION)/g" < $^ > $@
+
+.PHONY: deb
+deb: debian/changelog
+	@if ! which fakeroot; then \
+		if ! which apt-get; then \
+		  echo "'make deb' only works on debian systems" ; \
+		  exit 1; \
+		fi ; \
+		echo "Please run 'sudo apt install fakeroot' "; \
+		exit 1; \
+	fi
+	fakeroot debian/rules debian/control
+	fakeroot dpkg-buildpackage -b -uc

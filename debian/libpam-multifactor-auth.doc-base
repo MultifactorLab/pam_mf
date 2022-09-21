@@ -1,0 +1,7 @@
+Document: libpam-multifactor-auth
+Title: PAM Multifactor authentication module documentation
+Author: Multifactor developers
+Abstract: The documentation for the PAM Multifactor authentication module.
+Section: System/Administration
+
+Files: /usr/share/doc/libpam-multifactor-auth/*

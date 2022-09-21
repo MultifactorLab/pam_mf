@@ -1,0 +1,5 @@
+libpam-multifactor-auth (@VERSION@) unstable; urgency=medium
+
+  * Initial Debian version.
+
+ -- Multifactor <support@multifactor.ru>  Thu, 15 Sep 2022 17:22:00 +0300

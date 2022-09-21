@@ -1,0 +1,2 @@
+pam_mf.conf      etc
+pam_mf.so        lib/@DEB_HOST_MULTIARCH@/security

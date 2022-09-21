@@ -1,0 +1,3 @@
+libpam-multifactor-auth (1.0.0) unstable; urgency=medium
+
+  * Initial Debian version.

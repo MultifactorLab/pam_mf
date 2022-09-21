@@ -1,0 +1,20 @@
+Source: libpam-multifactor-auth
+Maintainer: Multifactor <support@multifactor.ru>
+Uploaders: Multifactor <support@multifactor.ru>
+Section: admin
+Priority: optional
+Standards-Version: 4.5.1
+Build-Depends:
+ debhelper-compat (= 12),
+ libpam0g-dev | libpam-dev,
+Rules-Requires-Root: no
+Homepage: https://multifactor.ru/
+Vcs-Browser: https://github.com/MultifactorLab/pam_mf/
+Vcs-Git: https://github.com/MultifactorLab/pam_mf.git
+
+Package: libpam-multifactor-auth
+Architecture: any
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends},
+Description: PAM Multifactor authentication module

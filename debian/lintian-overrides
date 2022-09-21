@@ -1,0 +1,3 @@
+# It contains the shared secret, which should not be in a
+# "world readable" file.
+libpam-multifactor-auth: non-standard-file-perm etc/pam_mf.conf 0600 != 0644
