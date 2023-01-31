@@ -127,6 +127,7 @@ void initConfig(mf_config_t* cfg)
 	strcpy(cfg->users,"");
 	strcpy(cfg->groups,"");
 	cfg->skipLocal=0;
+        cfg->passRequired=0;
 	cfg->timeout=20;
 	cfg->retry=4;
         cfg->rAlways=-1;
@@ -199,6 +200,11 @@ int loadConfig(mf_config_t* cfg, char* file, char* service)
 		}
 		if(isReturn(cfg,key,value)==0) continue;	
 		else if(strcmp(key,"radius_port")==0) strcpy(cfg->port,value);
+		else if(strcmp(key,"password_required")==0) {
+			strToLower(value);
+			if(strcmp(value,"true")==0) cfg->passRequired=1;
+			else cfg->passRequired=0;
+		}
 		else if(strcmp(key,"shared_secret")==0) strcpy(cfg->secret,value);
 		else if(strcmp(key,"nas_indentifier")==0) strcpy(cfg->nas,value);
 		else if(strcmp(key,"timeout")==0) cfg->timeout=atoi(value);

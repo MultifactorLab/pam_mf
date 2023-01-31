@@ -26,6 +26,8 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
 	service[0]=0;
 	char clientId[100];
 	service[0]=0;
+	char password[100];
+	password[0]=0;
 
 	char *buf;
 	char *resp=NULL;
@@ -55,6 +57,17 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
 	retval=chkUser(user,cfg.groups);
         if(retval>0) return cfg.rSkip!=-1?cfg.rSkip:PAM_SUCCESS;
 	if(retval==0 && cfg.skipLocal) return cfg.rSkip!=-1?cfg.rSkip:PAM_SUCCESS;
+        if(cfg.passRequired) {
+	        retval = pam_get_item(pamh, PAM_AUTHTOK,(const void**)&buf);
+        	if (retval == PAM_SUCCESS && buf!=NULL) strcpy(password,buf);
+		if(strlen(password)==0) {
+			retval = pam_prompt(pamh,PAM_PROMPT_ECHO_OFF,&resp,"%s: ","Password");
+			if (retval == PAM_SUCCESS && resp!=NULL ) {
+ 				strcpy(password,resp);
+				pam_set_item(pamh, PAM_AUTHTOK, password);
+			}
+		}
+	}
         retval = pam_get_item(pamh, PAM_RHOST,(const void**)&buf);
         if (retval == PAM_SUCCESS && buf!=NULL) strcpy(clientId,buf);
 	int idx=0;
@@ -68,7 +81,7 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
         char pass[100];
 	reply[0]=0;
 	state[0]=0;
-	pass[0]=0;
+	strcpy(pass,password);
 	idx=1;
 	for(;;) {
         	retval=sendRequest(idx++, host, cfg.port, cfg.secret, cfg.nas, user, pass,clientId,cfg.timeout, cfg.retry, state, reply);

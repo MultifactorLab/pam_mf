@@ -6,6 +6,7 @@ typedef struct mf_config {
 	char			users[300];
 	char			groups[300];
 	int			skipLocal;
+        int                     passRequired;
 	int			timeout;
 	int			retry;
 	int			rAlways,rUser,rSkip,rBypass,rInt,rOk,rFail;
