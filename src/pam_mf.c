@@ -39,7 +39,7 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
 	loadConfig(&cfg,config,NULL);
        	retval = pam_get_item(pamh, PAM_SERVICE,(const void**)&buf);
         if (retval == PAM_SUCCESS && buf!=NULL) {
-		strcpy(service,buf);
+		strncpy(service,buf,sizeof(service)-1);
 		loadConfig(&cfg,config,service);
 		if(strcmp(service,"sshd")==0) {
 			retval = pam_prompt(pamh,PAM_TEXT_INFO,&resp,"%s"," ");
@@ -51,7 +51,7 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
 	//dumpConfig(&cfg);
 	if(cfg.rAlways!=-1) return cfg.rAlways;
         retval = pam_get_item(pamh, PAM_USER,(const void**)&buf);
-        if (retval == PAM_SUCCESS && buf!=NULL) strcpy(user,buf);
+        if (retval == PAM_SUCCESS && buf!=NULL) strncpy(user,buf,sizeof(user)-1);
 	if(strlen(user)==0) return cfg.rUser!=-1?cfg.rUser:PAM_USER_UNKNOWN;
 	if(findItem(user,cfg.users)>=0)  return cfg.rSkip!=-1?cfg.rSkip:PAM_SUCCESS;
 	retval=chkUser(user,cfg.groups);
@@ -59,17 +59,17 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
 	if(retval==0 && cfg.skipLocal) return cfg.rSkip!=-1?cfg.rSkip:PAM_SUCCESS;
         if(cfg.passRequired) {
 	        retval = pam_get_item(pamh, PAM_AUTHTOK,(const void**)&buf);
-        	if (retval == PAM_SUCCESS && buf!=NULL) strcpy(password,buf);
+        	if (retval == PAM_SUCCESS && buf!=NULL) strncpy(password,buf,sizeof(password)-1);
 		if(strlen(password)==0) {
 			retval = pam_prompt(pamh,PAM_PROMPT_ECHO_OFF,&resp,"%s: ","Password");
 			if (retval == PAM_SUCCESS && resp!=NULL ) {
- 				strcpy(password,resp);
+ 				strncpy(password,resp,sizeof(password)-1);
 				pam_set_item(pamh, PAM_AUTHTOK, password);
 			}
 		}
 	}
         retval = pam_get_item(pamh, PAM_RHOST,(const void**)&buf);
-        if (retval == PAM_SUCCESS && buf!=NULL) strcpy(clientId,buf);
+        if (retval == PAM_SUCCESS && buf!=NULL) strncpy(clientId,buf,sizeof(clientId)-1);
 	int idx=0;
 	while(getItem(cfg.hosts,idx,host)>=0) {
 		if(chkRadius(host, cfg.port,cfg.secret,cfg.nas, 2, 2, NULL)==PW_AUTHENTICATION_ACK) break;
@@ -81,7 +81,7 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
         char pass[100];
 	reply[0]=0;
 	state[0]=0;
-	strcpy(pass,password);
+	strncpy(pass,password,sizeof(pass)-1);
 	idx=1;
 	for(;;) {
         	retval=sendRequest(idx++, host, cfg.port, cfg.secret, cfg.nas, user, pass,clientId,cfg.timeout, cfg.retry, state, reply);
@@ -89,7 +89,7 @@ PAM_EXTERN int pam_sm_authenticate( pam_handle_t *pamh, int flags,int argc, cons
 		resp=NULL;
 		int ret = pam_prompt(pamh,PAM_PROMPT_ECHO_ON,&resp,"%s: ",reply);
 		if (ret != PAM_SUCCESS || resp==NULL ) return cfg.rInt!=-1?cfg.rInt:PAM_AUTHINFO_UNAVAIL;
-                strcpy(pass,resp);
+                strncpy(pass,resp,sizeof(pass)-1);
 		if(idx>255) idx=0;
         }
         if(retval==PW_AUTHENTICATION_ACK) return cfg.rOk!=-1?cfg.rOk:PAM_SUCCESS;
